@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">GitHubMvvm</string>
+    <string name="imput_hint">Enter github username</string>
+    <string name="repository_icon">repository icon</string>
+    <string name="login_name">Login name: %s</string>
+    <string name="type">Type: %s</string>
+    <string name="public_repos_d">Public repos: %d</string>
+    <string name="email_s">Email: %s</string>
+    <string name="followers_d">Followers: %d</string>
+    <string name="following_d">Following: %d</string>
+    <string name="created_at_s">Created at: %s</string>
+    <string name="updated_at_s">Updated at: %s</string>
+    <string name="open_issues_d">Open issues: %d</string>
+    <string name="default_branch_s">Default branch: %s</string>
+    <string name="user_info">User Info</string>
+    <string name="repositories">Repositories</string>
+</resources>
