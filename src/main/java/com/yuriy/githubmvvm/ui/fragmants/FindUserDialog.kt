@@ -22,22 +22,22 @@ class FindUserDialog(private val callback: InputDialogListener) : DialogFragment
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.find_user_dialog, null)
 
-        view.et_user_input_field.editText?.setOnEditorActionListener { v, actionId, event ->
+        view.et_user_input_field.editText?.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 callback.findUser(v.text.toString())
-                this.dialog?.dismiss()
+                dialog?.dismiss()
             }
             return@setOnEditorActionListener false
         }
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setView(view)
-            .setPositiveButton("FIND") { dialog, _ ->
+            .setPositiveButton("FIND") { _, _ ->
                 inputString = view.et_user_input_field.editText?.text.toString()
                 callback.findUser(inputString)
             }
-            .setNegativeButton("CANCEL") { dialog, _ ->
-                dialog.dismiss()
+            .setNegativeButton("CANCEL") { _, _ ->
+                dialog?.dismiss()
             }
 
         return builder.create()

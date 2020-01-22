@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.squareup.picasso.Picasso
 import com.yuriy.githubmvvm.R
 import com.yuriy.githubmvvm.data.entities.UserInfo
 import com.yuriy.githubmvvm.mvvm.GitHubViewModel
+import com.yuriy.githubmvvm.mvvm.GitHubViewModelFactory
+import com.yuriy.githubmvvm.mvvm.Repository
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class UserDetailsFragment : Fragment() {
 
     private val viewModel by lazy {
-        activity.run {
-            ViewModelProviders.of(this@UserDetailsFragment)[GitHubViewModel::class.java]
-        }
+        val factory = GitHubViewModelFactory(Repository.getInstance())
+        activity?.run {
+            ViewModelProviders.of(this@UserDetailsFragment, factory)[GitHubViewModel::class.java]
+        } ?: throw Exception("Invalid activity")
     }
 
     override fun onCreateView(
@@ -36,16 +40,20 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun updateUI(info: UserInfo) = with(info) {
-        tv_login.text = login
-        tv_type.text = type
+
+        Picasso.get().load(avatarUrl).into(iv_avatar)
+
+        tv_login.text = getString(R.string.login_name, login)
+        tv_type.text = getString(R.string.type, type)
         tv_public_repos.text = getString(R.string.public_repos_d, publicRepos)
         tv_followers.text = getString(R.string.followers_d, followers)
         tv_following.text = getString(R.string.following_d, following)
         tv_created.text = getString(R.string.created_at_s, createdAt)
         tv_updated.text = getString(R.string.updated_at_s, updatedAt)
 
-        if (email != null) {
+        if (!email.isNullOrBlank()) {
             tv_email.text = getString(R.string.email_s, email)
-        }
+            tv_email.visibility = View.VISIBLE
+        } else tv_email.visibility = View.GONE
     }
 }
