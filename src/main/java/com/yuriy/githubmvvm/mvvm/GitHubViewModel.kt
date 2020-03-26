@@ -1,13 +1,20 @@
 package com.yuriy.githubmvvm.mvvm
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.yuriy.githubmvvm.data.entities.GitHubRepo
+import com.yuriy.githubmvvm.data.entities.UserInfo
 
-class GitHubViewModel(private val repository: Repository) : ViewModel()  {
+class GitHubViewModel(private val repository: Repository) : ViewModel() {
 
-    fun getReposList() = repository.getReposList()
+    val lastLogin: String?
+        get() = repository.lastLogin
 
-    fun getUserInfo() = repository.getUserInfo()
+    fun findUser(login: String) {
+        repository.updateData(login)
+    }
 
-    fun updateData(user: String) = repository.updateData(user)
+    fun getReposList(): LiveData<List<GitHubRepo>> = repository.reposList
 
+    fun getUserInfo(): LiveData<UserInfo> = repository.userData
 }

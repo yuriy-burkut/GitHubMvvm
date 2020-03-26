@@ -10,9 +10,9 @@ import retrofit2.http.Path
 interface GithubService {
 
     @GET("users/{user}/repos")
-    fun getReposList(@Path("user") user : String) : Call<List<GitHubRepo>>
+    suspend fun getReposList(@Path("user") user : String) : List<GitHubRepo>
 
     @GET("users/{user}")
-    fun getUserInfo(@Path("user") user: String) : Call<UserInfo>
+    suspend fun getUserInfo(@Path("user") user: String) : UserInfo
 
 }

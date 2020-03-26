@@ -5,24 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Picasso
 import com.yuriy.githubmvvm.R
 import com.yuriy.githubmvvm.data.entities.UserInfo
 import com.yuriy.githubmvvm.mvvm.GitHubViewModel
-import com.yuriy.githubmvvm.mvvm.GitHubViewModelFactory
-import com.yuriy.githubmvvm.mvvm.Repository
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class UserDetailsFragment : Fragment() {
 
-    private val viewModel by lazy {
-        val factory = GitHubViewModelFactory(Repository.getInstance())
-        activity?.run {
-            ViewModelProviders.of(this@UserDetailsFragment, factory)[GitHubViewModel::class.java]
-        } ?: throw Exception("Invalid activity")
-    }
+    private val viewModel: GitHubViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +27,7 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getUserInfo().observe(this, Observer { info ->
+        viewModel.getUserInfo().observe(viewLifecycleOwner, Observer { info ->
             updateUI(info)
         })
     }

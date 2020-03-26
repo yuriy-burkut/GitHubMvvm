@@ -1,69 +1,44 @@
 package com.yuriy.githubmvvm.network
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.widget.Toast
+import com.yuriy.githubmvvm.application.AppClass
 import com.yuriy.githubmvvm.data.entities.GitHubRepo
 import com.yuriy.githubmvvm.data.entities.UserInfo
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class NetDataSource {
 
-    val api = GitHubApi().createService()
+    private val api = GitHubApi().createService()
 
-    private val reposData = MutableLiveData<List<GitHubRepo>>()
-    private val userData = MutableLiveData<UserInfo>()
-
-    fun getReposList() : LiveData<List<GitHubRepo>> {
-
-        return reposData
-    }
-
-    fun getUserInfo() : LiveData<UserInfo> {
-
-        return userData
-    }
-
-    fun updateData(user: String) {
-        fetchReposList(user)
-        fetchUserInfo(user)
-    }
-
-    private fun fetchReposList(user: String){
-
-        api.getReposList(user).enqueue(object : Callback<List<GitHubRepo>> {
-
-            override fun onFailure(call: Call<List<GitHubRepo>>, t: Throwable) {
-                throw IOException(t)
+    suspend fun getReposList(user: String): List<GitHubRepo>? {
+        try {
+            return api.getReposList(user)
+        } catch (exception: IOException) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    AppClass.appContext(),
+                    exception.message,
+                    Toast.LENGTH_LONG
+                ).show()
             }
-
-            override fun onResponse(
-                call: Call<List<GitHubRepo>>,
-                response: Response<List<GitHubRepo>>
-            ) {
-                if (response.isSuccessful) {
-                    reposData.value = response.body()
-                }
-            }
-        })
+            return null
+        }
     }
 
-    private fun fetchUserInfo(user: String) {
-
-        api.getUserInfo(user).enqueue(object : Callback<UserInfo> {
-            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                throw IOException(t)
+    suspend fun getUserInfo(user: String): UserInfo? {
+        try {
+            return api.getUserInfo(user)
+        } catch (exception: IOException) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    AppClass.appContext(),
+                    exception.message,
+                    Toast.LENGTH_LONG
+                ).show()
             }
-
-            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                if (response.isSuccessful) {
-                    userData.value = response.body()
-                }
-            }
-        })
-
+        }
+        return null
     }
-
 }
