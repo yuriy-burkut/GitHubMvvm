@@ -1,5 +1,6 @@
 package com.yuriy.githubmvvm.network
 
+import android.content.Context
 import android.widget.Toast
 import com.yuriy.githubmvvm.application.AppClass
 import com.yuriy.githubmvvm.data.entities.GitHubRepo
@@ -7,33 +8,32 @@ import com.yuriy.githubmvvm.data.entities.UserInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import javax.inject.Inject
 
-class NetDataSource {
-
-    private val api = GitHubApi().createService()
+class NetDataSource @Inject constructor(val api: GitHubApi, val context: Context) {
 
     suspend fun getReposList(user: String): List<GitHubRepo>? {
-        try {
-            return api.getReposList(user)
+        return try {
+            api.githubService.getReposList(user)
         } catch (exception: IOException) {
             withContext(Dispatchers.Main) {
                 Toast.makeText(
-                    AppClass.appContext(),
+                    context,
                     exception.message,
                     Toast.LENGTH_LONG
                 ).show()
             }
-            return null
+            null
         }
     }
 
     suspend fun getUserInfo(user: String): UserInfo? {
         try {
-            return api.getUserInfo(user)
+            return api.githubService.getUserInfo(user)
         } catch (exception: IOException) {
             withContext(Dispatchers.Main) {
                 Toast.makeText(
-                    AppClass.appContext(),
+                    context,
                     exception.message,
                     Toast.LENGTH_LONG
                 ).show()

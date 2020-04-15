@@ -7,26 +7,34 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import com.yuriy.githubmvvm.R
+import com.yuriy.githubmvvm.application.AppClass
 import com.yuriy.githubmvvm.mvvm.GitHubViewModel
-import com.yuriy.githubmvvm.mvvm.GitHubViewModelFactory
-import com.yuriy.githubmvvm.mvvm.Repository
 import com.yuriy.githubmvvm.ui.fragmants.FindUserDialog
 import com.yuriy.githubmvvm.ui.fragmants.ReposListFragment
 import com.yuriy.githubmvvm.ui.fragmants.UserDetailsFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), FindUserDialog.InputDialogListener {
 
     private val listFragment by lazy { ReposListFragment() }
     private val detailsFragment by lazy { UserDetailsFragment() }
+
+    @Inject
+    lateinit var vmFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy {
-        val factory = GitHubViewModelFactory(Repository.getInstance())
-        ViewModelProvider(this, factory).get(GitHubViewModel::class.java)
+        ViewModelProvider(
+            this,
+            vmFactory
+        ).get(GitHubViewModel::class.java)
     }
+
     private val inputDialog by lazy { FindUserDialog(this) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as AppClass).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

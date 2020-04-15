@@ -1,11 +1,10 @@
 package com.yuriy.githubmvvm.cache
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.yuriy.githubmvvm.R
 
-class SpHelper(private val context: Context) {
-
-    private val prefs = context.getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE)
+class SpHelper(private val prefs: SharedPreferences, val context: Context) {
 
     var lastLogin: String?
         get() = prefs.getString(context.getString(R.string.login_key), "")

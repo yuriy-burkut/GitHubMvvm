@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.yuriy.githubmvvm.data.entities.GitHubRepo
 import com.yuriy.githubmvvm.data.entities.UserInfo
+import javax.inject.Inject
 
-class GitHubViewModel(private val repository: Repository) : ViewModel() {
+class GitHubViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     val lastLogin: String?
         get() = repository.lastLogin

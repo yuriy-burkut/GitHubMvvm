@@ -1,8 +1,9 @@
 package com.yuriy.githubmvvm.data.Dao
 
 import android.content.Context
-import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteOpenHelper
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.yuriy.githubmvvm.data.entities.GitHubRepo
 import com.yuriy.githubmvvm.data.entities.UserInfo
 
@@ -11,7 +12,7 @@ abstract class GitHubDatabase : RoomDatabase() {
 
     abstract fun gutHubUsersDao(): GitHubUsersDao
 
-    companion object {
+/*    companion object {
         @Volatile
         private var instance: GitHubDatabase? = null
         private val LOCK = Any()
@@ -26,17 +27,5 @@ abstract class GitHubDatabase : RoomDatabase() {
                 GitHubDatabase::class.java, "github.db"
             )
                 .build()
-    }
-
-    override fun createOpenHelper(config: DatabaseConfiguration?): SupportSQLiteOpenHelper {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun createInvalidationTracker(): InvalidationTracker {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun clearAllTables() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    }*/
 }
