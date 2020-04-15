@@ -11,9 +11,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-class GitHubApi {
+class GitHubApi(retrofit: Retrofit) {
 
-    private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+/*    private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     private val connectivityInterceptor = ConnectivityInterceptor(AppClass.appContext())
     private val errorsInterceptor = GitHubErrorsInterceptor()
 
@@ -32,5 +32,7 @@ class GitHubApi {
 
     fun createService() : GithubService {
         return retrofit.create(GithubService::class.java)
-    }
+    }*/
+
+    val githubService: GithubService = retrofit.create(GithubService::class.java)
 }
